@@ -1,30 +1,54 @@
-param appServicePlanName string = 'testaspname56asp2'
-param appServicePlanName1 string = 'testaspname56asp21'
-param appServicePlanName2 string = 'testaspname56asp22'
+var appServicePlanName = 'testaspname56asp21'
 param location string = 'eastus'
-param webAppName string = 'testwebappname56webapp2'
-param webAppName1 string = 'testwebappname56webapp21'
-param webAppName2 string = 'testwebappname56webapp22'
+param webAppName string = 'testwebappname56webapp21'
 
-module appServicePlanDeployment 'appServicePlan.bicep' = {
-  name: 'appServicePlanDeployment'
+module appServicePlanDeployment1 'appServicePlan.bicep' = {
+  name: 'appServicePlanDeployment1'
   params: {
-    appServicePlanName: appServicePlanName
-    appServicePlanName1: appServicePlanName1
-    appServicePlanName2: appServicePlanName2
+    appServicePlanName: '${appServicePlanName}${substring(uniqueString(subscription().id),0, 4)}'
     location: location
   }
 }
 
-module webAppDeployment 'webAppDeployment.bicep' = {
-  name: 'webAppDeployment'
+module appServicePlanDeployment2 'appServicePlan.bicep' = {
+  name: 'appServicePlanDeployment2'
   params: {
-    webAppName: webAppName
-    webAppName1: webAppName1
-    webAppName2: webAppName2
+    appServicePlanName: '${appServicePlanName}${substring(uniqueString(subscription().id),0, 4)}'
     location: location
-    appServicePlanId: appServicePlanDeployment.outputs.appServicePlanId
-    appServicePlanId1: appServicePlanDeployment.outputs.appServicePlanId1
-    appServicePlanId2: appServicePlanDeployment.outputs.appServicePlanId2
+  }
+}
+
+module appServicePlanDeployment3 'appServicePlan.bicep' = {
+  name: 'appServicePlanDeployment3'
+  params: {
+    appServicePlanName: '${appServicePlanName}${substring(uniqueString(subscription().id),0, 4)}'
+    location: location
+  }
+}
+
+module webAppDeployment1 'webAppDeployment.bicep' = {
+  name: 'webAppDeployment1'
+  params: {
+    webAppName: '${webAppName}${substring(uniqueString(subscription().id),0, 4)}'
+    location: location
+    appServicePlanId: appServicePlanDeployment1.outputs.appServicePlanId
+  }
+}
+
+module webAppDeployment2 'webAppDeployment.bicep' = {
+  name: 'webAppDeployment2'
+  params: {
+    webAppName: '${webAppName}${substring(uniqueString(subscription().id),0, 4)}'
+    location: location
+    appServicePlanId: appServicePlanDeployment1.outputs.appServicePlanId
+  }
+}
+
+module webAppDeployment3 'webAppDeployment.bicep' = {
+  name: 'webAppDeployment3'
+  params: {
+    webAppName: '${webAppName}${substring(uniqueString(subscription().id),0, 4)}'
+    location: location
+    appServicePlanId: appServicePlanDeployment1.outputs.appServicePlanId
   }
 }
