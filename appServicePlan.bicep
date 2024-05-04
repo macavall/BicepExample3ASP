@@ -43,3 +43,5 @@ resource appServicePlan2 'Microsoft.Web/serverfarms@2020-06-01' = {
 }
 
 output appServicePlanId string = appServicePlan.id
+output appServicePlanId1 string = appServicePlan1.id
+output appServicePlanId2 string = appServicePlan2.id
